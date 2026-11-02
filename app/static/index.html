@@ -1,0 +1,681 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>NAYRA · OCT Intelligence</title>
+<style>
+:root{--navy:#0B2A4A;--navy2:#071C35;--blue:#0E63C6;--sky:#2FA8E0;--ice:#EAF3FB;--bg:#EEF4FA;--card:#fff;--text:#14243A;--muted:#5A6B7F;--line:#DCE6F0;--ok:#0E8A6B;--err:#B42318}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",system-ui,Arial,sans-serif;background:var(--bg);color:var(--text);font-size:15px;line-height:1.45}
+h1,h2,h3,h4{margin:0}
+h2{font-size:20px;color:var(--navy)}h3{font-size:16px;color:var(--navy);margin-bottom:10px}
+h4{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px;margin:18px 0 8px}
+.muted{color:var(--muted);font-size:13px}
+button,.btn{font:inherit;font-weight:600;cursor:pointer;border:0;border-radius:10px;min-height:44px;padding:10px 16px;background:var(--blue);color:#fff;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn.sec{background:#fff;color:var(--blue);border:2px solid var(--blue)}
+.btn.ok{background:var(--ok)}.btn.no{background:var(--err)}
+.btn.pe{background:#fff;color:var(--navy);border:2px solid var(--navy)}
+button:disabled{opacity:.5;cursor:not-allowed}
+input,select{font:inherit;min-height:44px;padding:10px 12px;border:1px solid #B7C6D6;border-radius:10px;width:100%;background:#fff;color:var(--text)}
+label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin-bottom:6px}
+input:focus-visible,select:focus-visible,button:focus-visible,a:focus-visible{outline:3px solid var(--sky);outline-offset:2px}
+.oculto{display:none!important}
+.lnk{color:var(--blue);font-weight:600;font-size:14px;text-decoration:none;cursor:pointer}
+.card{background:var(--card);border-radius:16px;padding:20px;box-shadow:0 2px 10px rgba(11,42,74,.06);border:1px solid #EEF3F8}
+.pill{display:inline-block;padding:3px 10px;border-radius:12px;font-size:12px;font-weight:700;white-space:nowrap}
+.p-si{background:#DDF4EE;color:var(--ok)}.p-no{background:#FDECEA;color:var(--err)}.p-pe{background:#E8F0FB;color:var(--blue)}.p-gris{background:#EEF2F6;color:var(--muted)}
+.alerta{background:#FDECEA;color:var(--err);border-radius:12px;padding:12px 14px}
+.adv{background:#FEF3C7;color:#7A4A00;border-radius:10px;padding:9px 12px;margin:6px 0;font-size:14px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{text-align:left;padding:9px 8px;border-bottom:1px solid var(--line);vertical-align:middle}
+th{color:var(--muted);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.3px}
+tr.clic{cursor:pointer}tr.clic:hover{background:#F4F8FC}
+.barra{height:10px;background:#E3EBF3;border-radius:6px;overflow:hidden;margin:12px 0}
+.barra div{height:100%;background:linear-gradient(90deg,var(--sky),var(--blue))}
+.grid-est{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px}
+.est{display:flex;justify-content:space-between;align-items:center;gap:8px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px}
+.botones{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}
+.acciones{display:flex;gap:10px;flex-wrap:wrap}
+.campos{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.zona{border:2px dashed #B7C6D6;border-radius:14px;padding:22px;text-align:center;color:var(--muted);font-size:14px;background:#FAFCFE;margin-top:14px}
+.zona.sobre{border-color:var(--blue);background:var(--ice)}
+ul.lista{list-style:none;padding:0;margin:12px 0 0;display:grid;gap:8px}
+ul.lista li{display:flex;align-items:center;gap:12px;border:1px solid var(--line);border-radius:12px;padding:8px 10px}
+.mini{width:48px;height:48px;border-radius:8px;object-fit:cover;flex:none;background:var(--ice);color:var(--blue);display:flex;align-items:center;justify-content:center;font-weight:800;font-size:12px}
+ul.lista .txt{flex:1;min-width:0}
+ul.lista strong{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+ul.lista button{min-height:38px;padding:6px 12px;font-size:13px;background:#fff;color:var(--navy);border:1px solid var(--line)}
+.ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;flex:none;font-size:18px}
+.ico.az{background:var(--blue)}.ico.ve{background:#0BA58A}.ico.ce{background:var(--sky)}
+.check{width:44px;height:44px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;flex:none}
+.check.si{background:var(--ok)}
+.fila-b{display:grid;grid-template-columns:150px 1fr 40px;gap:10px;align-items:center;font-size:13px}
+.track{background:#E3EBF3;border-radius:6px;height:14px;overflow:hidden;display:flex}
+.seg-a{background:var(--ok)}.seg-n{background:#E08A7E}
+.barras-h{display:grid;gap:8px}
+.verticales{display:flex;align-items:flex-end;gap:14px;height:200px;padding-top:10px;border-bottom:1px solid var(--line)}
+.col{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;font-size:12px;color:var(--muted)}
+.col .v{width:70%;background:linear-gradient(180deg,var(--sky),var(--blue));border-radius:8px 8px 0 0}
+.col .pc{font-weight:700;color:var(--navy)}
+.col span{margin-top:6px;text-align:center}
+.rowsim{padding:8px 0;border-bottom:1px solid var(--line);font-size:13px}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:12px 18px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.3);z-index:60;font-size:14px;max-width:90vw}
+
+/* Login */
+#login{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;background:radial-gradient(circle at 20% 10%,#2FA8E0 0,transparent 35%),linear-gradient(160deg,var(--navy),#123B66 60%,var(--blue));z-index:50}
+.login-card{background:#fff;border-radius:22px;padding:36px 32px;width:100%;max-width:420px;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.login-card img{width:260px;max-width:100%;background:var(--navy);border-radius:18px;padding:10px}
+.login-card .lema{font-style:italic;color:var(--navy);font-size:17px;margin:14px 0 22px}
+.login-card form{display:grid;gap:14px;text-align:left}
+.login-card .aviso{font-size:12px;color:var(--muted);margin-top:16px}
+.err-login{color:var(--err);font-size:13px;min-height:18px}
+
+/* Estructura */
+#app{display:grid;grid-template-columns:250px 1fr;min-height:100vh}
+.side{background:linear-gradient(180deg,var(--navy),var(--navy2));color:#fff;display:flex;flex-direction:column;padding:26px 18px;gap:18px}
+.side-logo{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center}
+.side-logo img{width:170px;max-width:100%}
+.side-logo small{letter-spacing:3px;font-size:11px;color:#9CC3E8}
+.side nav{display:grid;gap:6px;margin-top:6px}
+.side nav a{color:#DCE9F6;text-decoration:none;padding:12px 14px;border-radius:12px;display:flex;justify-content:space-between;align-items:center;font-size:15px}
+.side nav a span.sym{width:22px;text-align:center;margin-right:10px;color:#9CC3E8}
+.side nav a:hover{background:rgba(255,255,255,.08)}
+.side nav a.act{background:var(--blue);color:#fff;box-shadow:0 6px 18px rgba(14,99,198,.4)}
+.side nav a.act span.sym{color:#fff}
+.badge{background:#F59E0B;color:#1B1200;font-size:12px;font-weight:800;border-radius:12px;padding:2px 9px;min-width:24px;text-align:center}
+.side .salir{margin-top:auto;background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)}
+main{display:flex;flex-direction:column;min-width:0}
+#hero{position:relative;background:linear-gradient(180deg,#D5E7F8,#F3F8FD 85%);padding:30px 36px 120px;overflow:hidden}
+.hero-chip{position:absolute;top:18px;right:36px}
+.hero-top{display:grid;grid-template-columns:1.1fr 1fr;gap:28px;align-items:center}
+.hero-logo img{width:min(380px,100%);display:block}
+.hero-tag{font-size:26px;font-style:italic;color:var(--navy);margin:8px 0 0}
+.hero-tag b{color:var(--blue);font-style:normal}
+.hero-txt{font-size:15px;border-left:1px solid #B5CCE3;padding-left:22px;color:var(--navy);margin:0}
+.hero-txt b{color:var(--blue)}
+.valores{position:relative;z-index:1;display:flex;justify-content:flex-end;margin-top:14px}
+.valores div{text-align:center;padding:4px 18px;font-size:13px;color:var(--navy)}
+.valores div+div{border-left:1px solid #B5CCE3}
+#hero svg.montes{position:absolute;left:0;right:0;bottom:0;width:100%;height:110px}
+.topbar{background:#fff;padding:14px 32px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);gap:12px;flex-wrap:wrap}
+.topbar h1{font-size:22px;color:var(--navy)}
+.chip{display:inline-flex;align-items:center;gap:8px;background:#F4F7FB;border-radius:24px;padding:6px 14px 6px 6px;font-size:14px;color:var(--navy);border:1px solid var(--line)}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+#contenido{padding:24px 32px 28px;display:grid;gap:18px;flex:1}
+.banner{background:#FEF3C7;color:#7A4A00;border:1px solid #F5D27A;border-radius:12px;padding:12px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.pie-bar{background:#fff;border-top:1px solid var(--line);padding:12px 32px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;font-size:13px;color:var(--navy)}
+.pie-bar i{color:var(--blue)}
+
+/* Panel */
+.dash{display:grid;grid-template-columns:1fr 290px;gap:18px;align-items:start}
+.panel-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+.panel-head select{width:auto;min-height:38px}
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.st{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;gap:12px;align-items:center;position:relative;overflow:hidden}
+.st strong{display:block;font-size:28px;color:var(--navy);line-height:1.2}
+.st small{font-size:12px}
+.st svg.spark{position:absolute;right:0;bottom:0;width:55%;height:40px}
+.dos{display:grid;grid-template-columns:1.35fr 1fr;gap:14px;margin-top:14px}
+.oct-card{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:#fff;display:flex;flex-direction:column}
+.oct-head{display:flex;justify-content:space-between;align-items:center;padding:10px 14px;font-size:14px;font-weight:600;color:var(--navy);border-bottom:1px solid var(--line)}
+.oct-body{position:relative;display:flex;background:#070B12;height:250px}
+.oct-body img{flex:1;min-width:0;height:100%;object-fit:cover}
+.oct-body .ph{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:#7FA6CC;font-size:13px;text-align:center;padding:14px}
+.cbar{width:14px;margin:14px 14px 14px auto;background:linear-gradient(180deg,#E63B2E,#F7B500,#2EC27E,#1FB6E6,#1C4FD8);border-radius:4px;flex:none}
+.res-card{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fff;display:flex;flex-direction:column;gap:12px}
+.res-box{background:#EAF3FB;border-radius:12px;padding:14px}
+.res-box strong{color:var(--blue);font-size:18px}
+.res-box .fila{display:flex;gap:10px;align-items:center;margin-top:8px}
+.marca-card{background:#fff;border-radius:16px;padding:22px 18px;text-align:center;border:1px solid var(--line);box-shadow:0 2px 10px rgba(11,42,74,.06)}
+.marca-card img.app{width:150px;max-width:100%;border-radius:34px;box-shadow:0 10px 30px rgba(11,42,74,.35)}
+.marca-nombre{margin:14px 0 0;color:var(--navy)}
+.marca-nombre b{display:block;font-size:24px;letter-spacing:2px}
+.marca-nombre small{letter-spacing:3px;font-size:11px}
+.sw{display:flex;justify-content:center;gap:12px;margin:20px 0 16px}
+.sw span{width:34px;height:34px;border-radius:50%}
+.val3{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);padding-top:14px;font-size:12px;color:var(--navy)}
+.val3 div{padding:4px 6px}
+.val3 div+div{border-left:1px solid var(--line)}
+.val3 i{display:block;font-style:normal;font-size:20px;color:var(--blue);margin-bottom:4px}
+
+/* Vistas */
+.grid2{display:grid;grid-template-columns:1.3fr 1fr;gap:18px}
+.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px}
+.kpi .card{display:flex;align-items:center;gap:14px}
+.kpi strong{display:block;font-size:30px;color:var(--navy)}
+.kpi span{font-size:13px;color:var(--muted)}
+
+@media (max-width:1000px){
+  #app{grid-template-columns:1fr}
+  .side{flex-direction:row;flex-wrap:wrap;align-items:center;justify-content:space-between}
+  .side nav{display:flex;flex-wrap:wrap;margin:0}
+  .side nav a{padding:8px 10px;font-size:13px}
+  .side .salir{margin:0}
+  .dash,.dos,.grid2,.hero-top{grid-template-columns:1fr}
+  .stats3{grid-template-columns:1fr}
+  .hero-txt{border-left:0;padding-left:0}
+  .valores{flex-wrap:wrap;justify-content:flex-start}
+  #hero{padding-bottom:120px}
+}
+@media print{.side,.topbar,.banner,.acciones,.decision,.zona,ul.lista,form,#login,#toast,.pie-bar,#hero{display:none!important}#app{display:block}#contenido{padding:0}.card{box-shadow:none;border:0}}
+</style>
+</head>
+<body>
+
+<div id="login">
+  <div class="login-card">
+    <img src="/static/nayra-logo.png" alt="NAYRA OCT Intelligence" onerror="this.src='/static/nayra-logo.png'">
+    <p class="lema">Precisión que acompaña decisiones.</p>
+    <form id="form-login">
+      <div><label for="lu">Usuario</label><input id="lu" autocomplete="username"></div>
+      <div><label for="lc">Contraseña</label><input id="lc" type="password" autocomplete="current-password"></div>
+      <button class="btn" type="submit">Ingresar</button>
+      <div class="err-login" id="err-login"></div>
+    </form>
+    <p class="aviso">Acceso de demostración (ficticio). No valida credenciales.</p>
+  </div>
+</div>
+
+<div id="app" class="oculto">
+  <aside class="side">
+    <div class="side-logo">
+      <img src="/static/nayra-logo-claro.png" alt="NAYRA" onerror="this.src='/static/nayra-logo.png'">
+      <small>OCT INTELLIGENCE</small>
+    </div>
+    <nav>
+      <a href="#inicio" data-r="inicio"><span><span class="sym">⌂</span>Inicio</span></a>
+      <a href="#cargar" data-r="cargar"><span><span class="sym">＋</span>Cargar expediente</span></a>
+      <a href="#alertas" data-r="alertas"><span><span class="sym">⚠</span>Alertas</span><span class="badge oculto" id="n-alertas">0</span></a>
+      <a href="#cie10" data-r="cie10"><span><span class="sym">⌕</span>Búsqueda CIE-10</span></a>
+      <a href="#historial" data-r="historial"><span><span class="sym">☰</span>Historial</span></a>
+      <a href="#metricas" data-r="metricas"><span><span class="sym">▥</span>Métricas</span></a>
+    </nav>
+    <button class="salir" id="btn-salir" type="button">Salir</button>
+  </aside>
+
+  <main>
+    <section id="hero">
+      <div class="hero-chip chip" data-chip></div>
+      <div class="hero-top">
+        <div>
+          <div class="hero-logo"><img src="/static/nayra-logo.png" alt="NAYRA OCT Intelligence" onerror="this.style.display='none'"></div>
+          <p class="hero-tag">Precisión que acompaña <b>decisiones.</b></p>
+        </div>
+        <p class="hero-txt">NAYRA es una plataforma de inteligencia artificial para el análisis de imágenes OCT, que combina <b>tecnología de vanguardia</b> con <b>nuestra identidad.</b></p>
+      </div>
+      <div class="valores"><div>◎ Precisión</div><div>✺ Inteligencia</div><div>♡ Confianza</div><div>❤ Compromiso</div></div>
+      <svg class="montes" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M0 120 L0 80 L180 40 L330 70 L520 20 L700 62 L880 30 L1060 66 L1240 24 L1440 60 L1440 120Z" fill="#B7D0EA" opacity=".75"/>
+        <path d="M0 120 L0 96 L240 60 L430 88 L650 52 L860 84 L1080 50 L1300 84 L1440 70 L1440 120Z" fill="#7EA7D3" opacity=".7"/>
+      </svg>
+    </section>
+
+    <header class="topbar" id="topbar">
+      <h1 id="titulo"></h1>
+      <div class="chip" data-chip></div>
+    </header>
+
+    <div id="contenido"></div>
+
+    <footer class="pie-bar">
+      <span><b>NAYRA</b> · Instituto de Seguros de Jujuy &nbsp;|&nbsp; Plataforma de Auditoría Oftalmológica</span>
+      <i>Ver más allá de la imagen.</i>
+    </footer>
+  </main>
+</div>
+<div id="toast" class="toast oculto"></div>
+
+<script>
+const $ = s => document.querySelector(s);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const idText = id => 'EVAL_' + String(id).padStart(4, '0');
+const pct = p => (p * 100).toFixed(1).replace('.', ',') + ' %';
+const dias = f => Math.floor((Date.now() - new Date(f).getTime()) / 86400000);
+const DEC = {AUTORIZADO:'Autorizado', NO_AUTORIZADO:'No autorizado', PEDIR_ESTUDIOS:'Pedir estudios'};
+const SPARK = '<svg class="spark" viewBox="0 0 120 40" preserveAspectRatio="none" aria-hidden="true"><path d="M0 34 L20 30 L40 32 L60 22 L80 24 L100 12 L120 6 L120 40 L0 40Z" fill="rgba(14,99,198,.12)"/><path d="M0 34 L20 30 L40 32 L60 22 L80 24 L100 12 L120 6" fill="none" stroke="#0E63C6" stroke-width="2"/></svg>';
+const S = {user:null, archivos:[], actual:null, hist:[], seleccion:null, dxSugerido:null, avisado:false, dias:30};
+
+async function api(url, opts) {
+  const r = await fetch(url, opts);
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(typeof j.detail === 'string' ? j.detail : 'No se pudo completar la acción.');
+  return j;
+}
+function toast(msg) {
+  const t = $('#toast');
+  t.textContent = msg;
+  t.classList.remove('oculto');
+  clearTimeout(toast.h);
+  toast.h = setTimeout(() => t.classList.add('oculto'), 3200);
+}
+function pillSug(s) { return s === 'AUTORIZADO' ? '<span class="pill p-si">Autorizar</span>' : '<span class="pill p-no">No autorizar</span>'; }
+function pillDec(d) {
+  if (!d) return '<span class="pill p-gris">Pendiente</span>';
+  const c = d === 'AUTORIZADO' ? 'p-si' : d === 'NO_AUTORIZADO' ? 'p-no' : 'p-pe';
+  return `<span class="pill ${c}">${DEC[d]}</span>`;
+}
+function fillChip() {
+  document.querySelectorAll('[data-chip]').forEach(el => el.innerHTML =
+    `<span class="avatar">${esc((S.user || '?').charAt(0).toUpperCase())}</span><span>${esc(S.user || '')}</span>`);
+}
+function resSug(x) {
+  const si = x.sugerencia === 'AUTORIZADO';
+  return `<div class="res-box"><span class="muted">Resultado sugerido · ${idText(x.id ?? x.id_expediente)}</span>
+    <div class="fila"><span class="check ${si ? 'si' : ''}">${si ? '✓' : '!'}</span>
+    <div><strong>${si ? 'Autorización Recomendada' : 'Revisión Médica Recomendada'}</strong>
+    <div class="muted">Probabilidad ${pct(x.probabilidad)}</div></div></div></div>`;
+}
+
+/* Login */
+$('#form-login').addEventListener('submit', e => {
+  e.preventDefault();
+  const u = $('#lu').value.trim(), c = $('#lc').value;
+  if (!u || !c) { $('#err-login').textContent = 'Completá usuario y contraseña.'; return; }
+  S.user = u;
+  $('#login').classList.add('oculto');
+  $('#app').classList.remove('oculto');
+  fillChip();
+  history.replaceState(null, '', '#inicio');
+  render();
+  revisarAlertas();
+});
+$('#btn-salir').onclick = () => {
+  S.user = null; S.archivos = []; S.actual = null;
+  $('#app').classList.add('oculto');
+  $('#login').classList.remove('oculto');
+  $('#lc').value = '';
+  history.replaceState(null, '', location.pathname);
+};
+
+/* Navegación */
+const VISTAS = {
+  inicio:['Panel de Evaluación', vistaInicio],
+  cargar:['Cargar expediente', vistaCargar],
+  alertas:['Alertas · más de 3 días sin respuesta', vistaAlertas],
+  cie10:['Búsqueda CIE-10', vistaCie10],
+  historial:['Historial de evaluaciones', vistaHistorial],
+  metricas:['Métricas del modelo', vistaMetricas]
+};
+function ruta() { const r = location.hash.slice(1); return VISTAS[r] ? r : 'inicio'; }
+async function render() {
+  if (!S.user) return;
+  const r = ruta();
+  document.querySelectorAll('.side nav a').forEach(a => a.classList.toggle('act', a.dataset.r === r));
+  $('#hero').classList.toggle('oculto', r !== 'inicio');
+  $('#topbar').classList.toggle('oculto', r === 'inicio');
+  $('#titulo').textContent = VISTAS[r][0];
+  $('#contenido').innerHTML = '<p class="muted">Cargando…</p>';
+  try { await VISTAS[r][1](); }
+  catch (e) { $('#contenido').innerHTML = `<div class="alerta">${esc(e.message)}</div>`; }
+}
+window.addEventListener('hashchange', render);
+function seleccionar(id) {
+  if (location.hash === '#historial') abrirDetalle(id);
+  else { S.seleccion = id; location.hash = '#historial'; }
+}
+
+/* Alertas */
+async function revisarAlertas() {
+  try {
+    const a = await api('/api/alertas?dias=3');
+    const n = a.length;
+    $('#n-alertas').textContent = n;
+    $('#n-alertas').classList.toggle('oculto', n === 0);
+    if (n > 0 && !S.avisado) {
+      toast(`${n} expediente(s) sin respuesta hace más de 3 días`);
+      S.avisado = true;
+    }
+  } catch (e) {}
+}
+setInterval(() => { if (S.user) revisarAlertas(); }, 60000);
+
+/* Panel de evaluación */
+const stat = (cls, sym, label, val, foot) => `
+  <div class="st"><span class="ico ${cls}">${sym}</span>
+    <div><span class="muted">${label}</span><strong>${val}</strong>${foot ? `<small class="muted">${foot}</small>` : ''}</div>
+    ${SPARK}</div>`;
+async function vistaInicio() {
+  const [h, m] = await Promise.all([api('/api/historial'), api('/api/metricas')]);
+  S.hist = h;
+  const ahora = Date.now();
+  const enPeriodo = h.filter(x => (ahora - new Date(x.fecha).getTime()) / 86400000 <= S.dias);
+  const pendientes = enPeriodo.filter(x => !x.decision).length;
+  const ver = m.versiones[0];
+  const prec = ver ? ver.exactitud_prueba : null;
+  const ult = h[0];
+  const dxTxt = ult ? esc(ult.diagnostico) : '—';
+
+  $('#contenido').innerHTML = `
+    <div class="dash">
+      <div class="card">
+        <div class="panel-head">
+          <div><h2>Panel de Evaluación</h2><span class="muted">Análisis asistido de estudios OCT</span></div>
+          <select id="per">${[7, 30, 90].map(d => `<option value="${d}" ${d === S.dias ? 'selected' : ''}>Últimos ${d} días</option>`).join('')}</select>
+        </div>
+        <div class="stats3">
+          ${stat('az', '≡', 'Estudios pendientes', pendientes, 'sin decisión')}
+          ${stat('ve', '✓', 'Evaluados', enPeriodo.length, 'en el período')}
+          ${stat('ce', '▥', 'Precisión del modelo', prec == null ? '—' : pct(prec), ver ? `${ver.expedientes_prueba} expedientes de prueba` : '')}
+        </div>
+        <div class="dos">
+          <div class="oct-card">
+            <div class="oct-head"><span>Estudio OCT · ${dxTxt}</span>
+              ${ult ? `<span class="lnk" onclick="seleccionar(${ult.id})">Ver en detalle →</span>` : ''}</div>
+            <div class="oct-body">
+              <img src="/static/oct-ejemplo.png" alt="" onload="this.nextElementSibling.remove()" onerror="this.remove()">
+              <span class="ph">Imagen de referencia: guardá oct-ejemplo.png en app/static</span>
+              <div class="cbar"></div>
+            </div>
+          </div>
+          <div class="res-card">
+            <h3 style="margin:0">Resultado Sugerido</h3>
+            ${ult ? `${resSug(ult)}
+              <button class="btn" type="button" onclick="seleccionar(${ult.id})">Ver Detalle →</button>`
+              : '<p class="muted">Cargá un expediente para ver una sugerencia.</p>'}
+          </div>
+        </div>
+      </div>
+      <aside class="marca-card">
+        <img class="app" src="/static/nayra-logo.png" alt="NAYRA" onerror="this.style.display='none'">
+        <div class="marca-nombre"><b>NAYRA</b><small>OCT INTELLIGENCE</small></div>
+        <div class="sw"><span style="background:#0B2A4A"></span><span style="background:#0E63C6"></span><span style="background:#B9D3EE"></span><span style="background:#DCE8F5;border:1px solid #C9D9EA"></span></div>
+        <div class="val3"><div><i>⛰</i>Raíces Andinas</div><div><i>⚙</i>Innovación Tecnológica</div><div><i>◉</i>Salud Visual</div></div>
+      </aside>
+    </div>`;
+  $('#per').onchange = e => { S.dias = +e.target.value; render(); };
+}
+
+/* Cargar expediente */
+function vistaCargar() {
+  const dx = S.dxSugerido || ''; S.dxSugerido = null;
+  $('#contenido').innerHTML = `
+    <div class="card">
+      <h3>1. Estudios del expediente</h3>
+      <div class="botones">
+        <button class="btn" id="b-pdf" type="button">Subir PDF</button>
+        <button class="btn" id="b-cam" type="button">Tomar foto con la cámara</button>
+        <button class="btn sec" id="b-gal" type="button">Elegir imágenes</button>
+      </div>
+      <input type="file" id="i-pdf" accept="application/pdf" multiple hidden>
+      <input type="file" id="i-cam" accept="image/*" capture="environment" hidden>
+      <input type="file" id="i-gal" accept="image/*" multiple hidden>
+      <div class="zona" id="zona">Arrastrá acá los PDF o las imágenes. En el celular, el botón de cámara abre la cámara: una foto por página.</div>
+      <ul class="lista" id="lista"></ul>
+      <p class="muted" id="cuenta"></p>
+    </div>
+    <form class="card" id="form-exp">
+      <h3>2. Datos del pedido</h3>
+      <div class="campos">
+        <div><label for="edad">Edad (años)</label><input id="edad" type="number" min="0" max="120" inputmode="numeric" required></div>
+        <div><label for="dx">Diagnóstico (CIE-10 completo)</label><input id="dx" maxlength="4" autocapitalize="characters" placeholder="H353" value="${esc(dx)}" required><span class="muted">Como figura en el DX, sin punto.</span></div>
+        <div><label for="prac">Práctica solicitada</label>
+          <select id="prac" required><option value="">Elegí una opción</option><option>OCT</option><option>Inyección de Vabysmo</option><option>Cirugía de cataratas</option><option>Sin clasificar</option></select></div>
+      </div>
+      <div style="margin-top:18px"><button class="btn" type="submit" id="b-analizar" style="width:100%">Analizar expediente</button></div>
+    </form>
+    <div id="resultado"></div>`;
+  [['b-pdf','i-pdf'], ['b-cam','i-cam'], ['b-gal','i-gal']].forEach(([b, i]) => {
+    $('#' + b).onclick = () => $('#' + i).click();
+    $('#' + i).onchange = e => { agregar(e.target.files); e.target.value = ''; };
+  });
+  const z = $('#zona');
+  ['dragenter', 'dragover'].forEach(t => z.addEventListener(t, e => { e.preventDefault(); z.classList.add('sobre'); }));
+  ['dragleave', 'drop'].forEach(t => z.addEventListener(t, e => { e.preventDefault(); z.classList.remove('sobre'); }));
+  z.addEventListener('drop', e => agregar(e.dataTransfer.files));
+  $('#dx').addEventListener('input', e => { e.target.value = e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''); });
+  $('#form-exp').addEventListener('submit', analizar);
+  pintarLista();
+}
+function agregar(files) {
+  for (const f of files) {
+    const ok = f.type === 'application/pdf' || f.type.startsWith('image/');
+    if (!ok) { toast(`«${f.name}» no es PDF ni imagen.`); continue; }
+    if (f.size > 25 * 1024 * 1024) { toast(`«${f.name}» supera los 25 MB.`); continue; }
+    S.archivos.push(f);
+  }
+  pintarLista();
+}
+function pintarLista() {
+  const ul = $('#lista');
+  if (!ul) return;
+  ul.innerHTML = S.archivos.map((f, i) => `
+    <li>${f.type.startsWith('image/') ? `<img class="mini" alt="" src="${URL.createObjectURL(f)}">` : '<div class="mini">PDF</div>'}
+      <div class="txt"><strong>${esc(f.name)}</strong><span class="muted">${f.type === 'application/pdf' ? 'PDF' : 'Imagen'} · ${Math.max(1, Math.round(f.size / 1024))} KB</span></div>
+      <button type="button" data-i="${i}">Quitar</button></li>`).join('');
+  ul.querySelectorAll('button').forEach(b => b.onclick = () => { S.archivos.splice(+b.dataset.i, 1); pintarLista(); });
+  $('#cuenta').textContent = S.archivos.length ? `${S.archivos.length} archivo(s) cargado(s).` : 'Todavía no cargaste archivos.';
+}
+async function analizar(e) {
+  e.preventDefault();
+  const out = $('#resultado');
+  if (!S.archivos.length) { toast('Cargá al menos un PDF o una foto.'); return; }
+  const fd = new FormData();
+  S.archivos.forEach(f => fd.append('archivos', f));
+  fd.append('edad', $('#edad').value);
+  fd.append('diagnostico', $('#dx').value);
+  fd.append('practica', $('#prac').value);
+  const b = $('#b-analizar');
+  b.disabled = true; b.textContent = 'Analizando… puede tardar unos segundos';
+  out.innerHTML = '';
+  try {
+    const d = await api('/api/evaluar', {method:'POST', body:fd});
+    Object.assign(d, {edad:+$('#edad').value, practica:$('#prac').value, diagnostico:$('#dx').value.toUpperCase(), completo:true});
+    S.actual = d;
+    out.innerHTML = `<div class="card" id="detalle-exp">${detalleHTML(d)}</div>`;
+    bindDetalle();
+    cargarSimilares(d.id_expediente);
+    out.scrollIntoView({behavior:'smooth'});
+  } catch (err) {
+    out.innerHTML = `<div class="alerta">${esc(err.message)}</div>`;
+  } finally {
+    b.disabled = false; b.textContent = 'Analizar expediente';
+  }
+}
+
+/* Detalle (análisis nuevo e historial) */
+function detalleHTML(d) {
+  const ests = Array.isArray(d.estudios) ? d.estudios : [];
+  const adv = (d.advertencias || []).map(a => `<div class="adv">${esc(a)}</div>`).join('');
+  const pags = d.completo && d.paginas ? `<h4>Páginas reconocidas</h4>
+    <div style="overflow-x:auto"><table><thead><tr><th>Página</th><th>Tipo detectado</th><th>Confianza</th></tr></thead><tbody>
+    ${d.paginas.map(p => `<tr><td>${p.pagina}</td><td>${esc(p.tipo)}</td><td>${(p.confianza * 100).toFixed(0)} %</td></tr>`).join('')}
+    </tbody></table></div>` : '';
+  const vars = d.completo && d.variables ? `<h4>Variables que más pesan</h4>
+    <ul style="margin:0;padding-left:18px">${d.variables.map(v => `<li>${esc(v.variable)} (${v.importancia.toFixed(3).replace('.', ',')})</li>`).join('')}</ul>` : '';
+  return `
+    ${resSug(d)}
+    <div class="barra"><div style="width:${(d.probabilidad * 100).toFixed(1)}%"></div></div>
+    <h4>Datos del pedido</h4>
+    <div class="grid-est">
+      <div class="est"><span>Diagnóstico (CIE-10)</span><b>${esc(d.diagnostico)}</b></div>
+      <div class="est"><span>Edad</span><b>${esc(d.edad)}</b></div>
+      <div class="est"><span>Práctica</span><b>${esc(d.practica)}</b></div>
+    </div>
+    <h4>Estudios detectados</h4>
+    <div class="grid-est">${ests.length ? ests.map(e => `<div class="est"><span>${esc(e.estudio)}</span><span class="pill ${e.presente ? 'p-si' : 'p-gris'}">${e.presente ? 'Presente' : 'No detectado'}</span></div>`).join('') : '<span class="muted">Sin datos de estudios.</span>'}</div>
+    ${adv}${pags}${vars}
+    <h4>Decisión de la médica</h4>
+    <div class="botones decision">
+      <button class="btn ok" type="button" data-dec="AUTORIZADO">Autorizar</button>
+      <button class="btn no" type="button" data-dec="NO_AUTORIZADO">No autorizar</button>
+      <button class="btn pe" type="button" data-dec="PEDIR_ESTUDIOS">Pedir estudios</button>
+    </div>
+    <div style="margin-top:12px"><label for="motivo">Motivo (opcional)</label><input id="motivo" maxlength="300" placeholder="Ej.: falta la última OCT" value="${esc(d.motivo || '')}"></div>
+    <p class="muted" id="dec-estado">${d.decision ? 'Decisión registrada: ' + esc(DEC[d.decision]) + '.' : 'Sin decisión registrada.'}</p>
+    <h4>Expedientes similares</h4>
+    <div id="similares" class="muted">Buscando…</div>
+    <div class="acciones" style="margin-top:18px">
+      <button class="btn sec" type="button" onclick="exportarCSV()">Exportar a Excel (CSV)</button>
+      <button class="btn sec" type="button" onclick="window.print()">Exportar a PDF</button>
+    </div>
+    <p class="muted" style="margin-top:14px">La sugerencia es una ayuda para priorizar. La decisión de autorizar la toma siempre la médica auditora.</p>`;
+}
+function bindDetalle() {
+  document.querySelectorAll('#detalle-exp [data-dec]').forEach(b => b.onclick = () => decidir(b.dataset.dec));
+}
+async function decidir(dec) {
+  const x = S.actual; if (!x) return;
+  const id = x.id_expediente ?? x.id;
+  const fd = new FormData();
+  fd.append('id_expediente', id);
+  fd.append('decision', dec);
+  fd.append('motivo', $('#motivo')?.value || '');
+  try {
+    await api('/api/decision', {method:'POST', body:fd});
+    x.decision = dec;
+    $('#dec-estado').textContent = 'Decisión registrada: ' + DEC[dec] + '.';
+    toast('Decisión registrada: ' + DEC[dec]);
+    revisarAlertas();
+  } catch (err) { toast(err.message); }
+}
+async function cargarSimilares(id) {
+  const el = $('#similares');
+  if (!el) return;
+  try {
+    const s = await api(`/api/similares/${id}`);
+    el.innerHTML = s.length
+      ? s.map(x => `<div class="rowsim">${idText(x.id)} · ${esc(x.fecha.replace('T', ' '))} · Dx ${esc(x.diagnostico)} · ${esc(x.practica)} · ${pillDec(x.decision)}</div>`).join('')
+      : 'Todavía no hay expedientes con decisión para comparar.';
+  } catch (e) { el.textContent = 'No se pudieron cargar los similares.'; }
+}
+function exportarCSV() {
+  const x = S.actual; if (!x) return;
+  const cab = ['id','fecha','edad','diagnostico','practica','sugerencia','probabilidad','decision','motivo','version_modelo'];
+  const val = [
+    x.id ?? x.id_expediente, x.fecha || new Date().toISOString().slice(0, 19), x.edad, x.diagnostico, x.practica,
+    x.sugerencia, x.probabilidad, x.decision || '', x.motivo || '', x.version_modelo || ''
+  ];
+  const csv = [cab.join(';'), val.map(v => `"${String(v ?? '').replace(/"/g, '""')}"`).join(';')].join('\r\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob(['\ufeff' + csv], {type:'text/csv;charset=utf-8'}));
+  a.download = idText(x.id ?? x.id_expediente) + '.csv';
+  a.click();
+}
+
+/* Historial */
+async function vistaHistorial() {
+  const h = await api('/api/historial');
+  S.hist = h;
+  const sel = S.seleccion; S.seleccion = null;
+  const porDx = {};
+  h.forEach(x => {
+    porDx[x.diagnostico] = porDx[x.diagnostico] || {a:0, n:0};
+    if (x.sugerencia === 'AUTORIZADO') porDx[x.diagnostico].a++; else porDx[x.diagnostico].n++;
+  });
+  const dxs = Object.entries(porDx).sort((p, q) => (q[1].a + q[1].n) - (p[1].a + p[1].n));
+  const max = Math.max(1, ...dxs.map(([, v]) => v.a + v.n));
+  $('#contenido').innerHTML = `
+    <div class="grid2">
+      <div class="card"><h3>Expedientes por diagnóstico CIE-10</h3>
+        ${dxs.length ? `<div class="barras-h">${dxs.map(([k, v]) => `
+          <div class="fila-b"><span>${esc(k)}</span>
+            <div class="track" title="${v.a} para autorizar, ${v.n} para no autorizar">
+              <div class="seg-a" style="width:${(v.a / max * 100).toFixed(1)}%"></div>
+              <div class="seg-n" style="width:${(v.n / max * 100).toFixed(1)}%"></div>
+            </div><b>${v.a + v.n}</b></div>`).join('')}</div>
+          <p class="muted" style="margin-top:10px">Verde: sugeridos para autorizar · Rojo: sugeridos para no autorizar.</p>`
+          : '<p class="muted">Sin evaluaciones todavía.</p>'}
+      </div>
+      <div class="card"><h3>Filtrar</h3>
+        <label for="filtro">Mostrar</label>
+        <select id="filtro"><option value="todos">Todos</option><option value="pendientes">Sin decisión</option><option value="decididos">Con decisión</option></select>
+        <p class="muted" style="margin-top:12px">Hacé clic en una fila para ver el detalle y registrar la decisión.</p>
+      </div>
+    </div>
+    <div class="card"><h3>Evaluaciones</h3><div id="tabla-hist"></div></div>
+    <div id="detalle-wrap"></div>`;
+  const pintarTabla = () => {
+    const f = $('#filtro').value;
+    const rows = h.filter(x => f === 'todos' || (f === 'pendientes' ? !x.decision : !!x.decision));
+    $('#tabla-hist').innerHTML = rows.length ? tablaHist(rows) : '<p class="muted">No hay evaluaciones con ese filtro.</p>';
+  };
+  $('#filtro').onchange = pintarTabla;
+  pintarTabla();
+  if (sel) abrirDetalle(sel);
+}
+function tablaHist(rows) {
+  return `<div style="overflow-x:auto"><table><thead><tr><th>ID</th><th>Fecha</th><th>Dx</th><th>Práctica</th><th>Sugerencia</th><th>Decisión</th></tr></thead><tbody>
+    ${rows.map(x => `<tr class="clic" onclick="seleccionar(${x.id})"><td>${idText(x.id)}</td><td>${esc(x.fecha.replace('T', ' '))}</td><td>${esc(x.diagnostico)}</td><td>${esc(x.practica)}</td><td>${pillSug(x.sugerencia)}</td><td>${pillDec(x.decision)}</td></tr>`).join('')}
+    </tbody></table></div>`;
+}
+function abrirDetalle(id) {
+  const row = S.hist.find(x => x.id === id);
+  if (!row) return;
+  let ests = [];
+  try { ests = JSON.parse(row.estudios); } catch (e) {}
+  const d = {...row, estudios:ests, id_expediente:row.id, completo:false, advertencias:[], paginas:[], variables:[]};
+  S.actual = d;
+  const w = $('#detalle-wrap');
+  w.innerHTML = `<div class="card" id="detalle-exp">
+    <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:6px">
+      <h3 style="margin:0">Detalle · ${idText(row.id)}</h3>
+      <button class="btn sec" type="button" onclick="cerrarDetalle()">Cerrar</button></div>
+    ${detalleHTML(d)}</div>`;
+  bindDetalle();
+  cargarSimilares(row.id);
+  w.scrollIntoView({behavior:'smooth'});
+}
+function cerrarDetalle() { $('#detalle-wrap').innerHTML = ''; S.actual = null; }
+
+/* Alertas */
+async function vistaAlertas() {
+  const a = await api('/api/alertas?dias=3');
+  $('#contenido').innerHTML = `<div class="card"><h3>Expedientes sin respuesta</h3>
+    ${a.length ? `<div style="overflow-x:auto"><table><thead><tr><th>ID</th><th>Ingreso</th><th>Días sin respuesta</th><th>Dx</th><th>Práctica</th><th>Sugerencia</th><th></th></tr></thead><tbody>
+    ${a.map(x => `<tr><td>${idText(x.id)}</td><td>${esc(x.fecha.replace('T', ' '))}</td><td><b style="color:var(--err)">${dias(x.fecha)}</b></td><td>${esc(x.diagnostico)}</td><td>${esc(x.practica)}</td><td>${pillSug(x.sugerencia)}</td><td><button class="btn sec" type="button" onclick="seleccionar(${x.id})">Abrir</button></td></tr>`).join('')}
+    </tbody></table></div>` : '<p class="muted">No hay expedientes con más de 3 días sin respuesta.</p>'}</div>`;
+}
+
+/* CIE-10 */
+function vistaCie10() {
+  $('#contenido').innerHTML = `<div class="card"><h3>Buscar código CIE-10</h3>
+    <label for="q">Código o descripción (ej. H35, catarata, glaucoma)</label>
+    <input id="q" placeholder="Escribí para buscar…" autocomplete="off">
+    <div id="res-cie" style="margin-top:14px"></div>
+    <p class="muted" style="margin-top:12px">Hacé clic en un código para usarlo en el próximo expediente.</p></div>`;
+  let t;
+  const buscar = async () => {
+    const q = $('#q').value.trim();
+    const r = await api('/api/cie10?q=' + encodeURIComponent(q));
+    $('#res-cie').innerHTML = r.length
+      ? `<div style="overflow-x:auto"><table><thead><tr><th>Código</th><th>Descripción</th></tr></thead><tbody>
+         ${r.map(c => `<tr class="clic" onclick="usarDx('${esc(c.codigo)}')"><td><b>${esc(c.codigo)}</b></td><td>${esc(c.descripcion)}</td></tr>`).join('')}
+         </tbody></table></div>`
+      : '<p class="muted">Sin coincidencias.</p>';
+  };
+  $('#q').addEventListener('input', () => { clearTimeout(t); t = setTimeout(buscar, 250); });
+  buscar();
+}
+function usarDx(c) { S.dxSugerido = c; location.hash = '#cargar'; }
+
+/* Métricas */
+async function vistaMetricas() {
+  const m = await api('/api/metricas');
+  const c = m.decisiones;
+  const v = [...m.versiones].reverse();
+  $('#contenido').innerHTML = `
+    <div class="kpi">
+      <div class="card"><span class="ico az">V</span><div><span>Versiones del modelo</span><strong>${m.versiones.length}</strong></div></div>
+      <div class="card"><span class="ico ve">D</span><div><span>Decisiones registradas</span><strong>${c.decididos}</strong></div></div>
+      <div class="card"><span class="ico ce">%</span><div><span>Concordancia con la médica</span><strong>${c.concordancia == null ? '—' : pct(c.concordancia)}</strong></div></div>
+    </div>
+    <div class="grid2">
+      <div class="card"><h3>Exactitud en prueba según expedientes de entrenamiento</h3>
+        ${v.length ? `<div class="verticales">${v.map(x => `
+          <div class="col"><span class="pc">${pct(x.exactitud_prueba)}</span>
+            <div class="v" style="height:${Math.max(2, Math.round(x.exactitud_prueba * 120))}px"></div>
+            <span>${x.expedientes_total} exp.</span></div>`).join('')}</div>
+          <p class="muted" style="margin-top:10px">Cada barra es una versión del modelo. Con pocos expedientes de prueba la exactitud es inestable.</p>`
+          : '<p class="muted">Todavía no hay versiones entrenadas.</p>'}
+      </div>
+      <div class="card"><h3>Versiones</h3>
+        <div style="overflow-x:auto"><table><thead><tr><th>Versión</th><th>Fecha</th><th>Exp.</th><th>Prueba</th></tr></thead><tbody>
+        ${m.versiones.map(x => `<tr><td>${esc(x.version)}</td><td>${esc(x.fecha.replace('T', ' '))}</td><td>${x.expedientes_total}</td><td>${x.expedientes_prueba}</td></tr>`).join('')}
+        </tbody></table></div>
+      </div>
+    </div>`;
+}
+</script>
+</body>
+</html>

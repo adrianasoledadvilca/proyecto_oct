@@ -1,0 +1,9 @@
+{
+  "version": "v20261101_133051",
+  "fecha": "2026-11-01T13:30:51",
+  "expedientes_total": 28,
+  "expedientes_entrenamiento": 22,
+  "expedientes_prueba": 6,
+  "exactitud_entrenamiento": 0.955,
+  "exactitud_prueba": 1.0
+}

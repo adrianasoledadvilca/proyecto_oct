@@ -1,0 +1,17 @@
+[
+  {"codigo": "H186", "descripcion": "Queratocono"},
+  {"codigo": "H259", "descripcion": "Catarata senil, no especificada"},
+  {"codigo": "H269", "descripcion": "Catarata, no especificada"},
+  {"codigo": "H353", "descripcion": "Degeneración de la mácula y del polo posterior"},
+  {"codigo": "H360", "descripcion": "Retinopatía diabética"},
+  {"codigo": "H400", "descripcion": "Sospecha de glaucoma"},
+  {"codigo": "H401", "descripcion": "Glaucoma primario de ángulo abierto"},
+  {"codigo": "H431", "descripcion": "Hemorragia vítrea"},
+  {"codigo": "H330", "descripcion": "Desprendimiento de retina con rotura"},
+  {"codigo": "H461", "descripcion": "Neuritis óptica retrobulbar"},
+  {"codigo": "H471", "descripcion": "Papiledema"},
+  {"codigo": "H472", "descripcion": "Atrofia óptica"},
+  {"codigo": "H521", "descripcion": "Miopía"},
+  {"codigo": "H522", "descripcion": "Astigmatismo"},
+  {"codigo": "H524", "descripcion": "Presbicia"}
+]
