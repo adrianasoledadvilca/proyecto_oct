@@ -1,10 +1,12 @@
 """Base SQLite: evaluaciones, decisiones de la médica y métricas (solo datos pseudonimizados)."""
 import json
+import os
 import sqlite3
 from datetime import datetime, timedelta
 from pathlib import Path
 
-RUTA = Path(__file__).resolve().parent.parent / "datos" / "expedientes.db"
+RUTA_PREDETERMINADA = Path(__file__).resolve().parent.parent / "datos" / "expedientes.db"
+RUTA = Path(os.environ.get("DB_PATH", str(RUTA_PREDETERMINADA)))
 
 
 def _con():

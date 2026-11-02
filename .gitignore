@@ -1,0 +1,20 @@
+# Entorno y artefactos locales de Python
+.venv/
+__pycache__/
+*.py[cod]
+.env
+
+# Expedientes e imágenes usados para entrenar
+expedientes/
+paginas_todas/
+paginas_etiquetadas/
+
+# Datos clínicos de entrenamiento y bases locales
+datos/
+base_estructurada.csv
+datos_clinicos.csv
+ids_autorizacion.csv
+sugerencias_oct.csv
+*.db
+*.sqlite
+*.sqlite3

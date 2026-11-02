@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: proyecto-oct
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/salud
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
+      - key: DB_PATH
+        value: /var/data/expedientes.db
+    disk:
+      name: proyecto-oct-data
+      mountPath: /var/data
+      sizeGB: 1
