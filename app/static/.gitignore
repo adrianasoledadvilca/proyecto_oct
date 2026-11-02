@@ -1,0 +1,6 @@
+.venv/
+expedientes/
+paginas_todas/
+paginas_etiquetadas/
+modelos/
+resnet18_estudios.pth
